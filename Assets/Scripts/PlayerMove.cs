@@ -4,33 +4,27 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed = 5.0f;
     public float JumpStrength = 5.0f;
-    Animator anim;
+    private Rigidbody2D rb;
+
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        //move to right and left
-        float moveY = Input.GetAxis("Horizontal");  
-        transform.Translate(Vector3.right * moveY * speed * Time.deltaTime);
+        float move = Input.GetAxis("Horizontal");
+        rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (Input.GetKeyDown(KeyCode.Space) )
         {
-            GetComponent<Rigidbody2D>().AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
-            //Animation jump
-            anim.SetTrigger("isJump");
-
-
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, JumpStrength);
         }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            //Animation run
-            anim.SetBool("isDead", true);
-        }
-
     }
 
+
 }
+
+
